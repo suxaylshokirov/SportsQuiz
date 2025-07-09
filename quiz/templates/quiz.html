@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-900 text-white">
+<head>
+  <meta charset="UTF-8">
+  <title>Sports Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
+  <main class="w-full max-w-xl p-6 space-y-6">
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="bg-gray-800 p-6 rounded-xl shadow-xl text-center">
+      <h1 class="text-3xl font-bold mb-4">Welcome to the Sports Quiz!</h1>
+      <p class="mb-6 text-lg text-gray-300">Test your knowledge of football (soccer) and basketball by answering multiple-choice questions. See how much you know!</p>
+      <button id="start-btn" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded text-lg font-semibold transition">
+        Click to Start
+      </button>
+    </div>
+
+    <!-- Quiz App (initially hidden) -->
+    <div id="quiz-app" class="bg-gray-800 p-6 rounded-xl shadow-xl text-center hidden">
+      <h1 class="text-3xl font-bold mb-4">Pick a Sport</h1>
+      <div class="flex gap-4 justify-center mb-6">
+        <button class="category-btn bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded" data-category="soccer">Football (Soccer)</button>
+        <button class="category-btn bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded" data-category="basketball">Basketball</button>
+      </div>
+      <div id="quiz-area" class="text-left space-y-4"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer" class="text-gray-400 text-sm text-center">
+      A quiz project by 
+      <a href="https://github.com/suxaylshokirov" target="_blank" class="underline hover:text-white transition">
+        @suxaylshokirov
+      </a>
+    </footer>    
+  </main>
+
+  <script src="{% static 'quiz/main.js' %}"></script>
+</body>
+
+</html>
