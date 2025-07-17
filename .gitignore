@@ -18,6 +18,3 @@ media/
 
 
 .DS_Store
-
-build.sh
-render.yaml
