@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sports Quiz</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0a1f44;
+      color: white;
+    }
+
+    .centered-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding: 20px;
+      text-align: center;
+    }
+
+    #quiz-container, #welcome-screen {
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .option, .category-btn, .restart-btn {
+      display: block;
+      margin: 8px auto;
+      width: 90%;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      box-sizing: border-box;
+    }
+
+    .option {
+      background-color: #333;
+      color: white;
+      padding: 14px 20px;
+      font-size: 18px;
+    }
+
+    .option.correct {
+      background-color: green;
+    }
+
+    .option.wrong {
+      background-color: red;
+    }
+
+    .category-btn {
+      background-color: #014421;
+      color: white;
+      padding: 6px 10px;
+      font-size: 14px;
+      width: 60%; /* Reduced from 90% to make them less wide */
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .category-btn:hover {
+      background-color: #026c31;
+    }
+
+    .restart-btn {
+      background-color: #555;
+      color: white;
+      padding: 10px 16px;
+      font-size: 16px;
+    }
+
+    a.footer-link {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 14px;
+      margin-top: 30px;
+      display: inline-block;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        font-size: 16px;
+        padding: 15px;
+      }
+
+      h1, h2 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Rest of the HTML and JavaScript remains unchanged -->
+  <div id="welcome-box" class="centered-container">
+    <h1>Welcome to the Sports Quiz</h1>
+    <p>Choose a category:</p>
+    <button class="category-btn" onclick="startQuiz('soccer')">⚽ Football (Soccer)</button>
+    <button class="category-btn" onclick="startQuiz('basketball')">🏀 Basketball</button>
+    <a href="https://github.com/suxaylshokirov" class="footer-link" target="_blank">Made by @suxaylshokirov</a>
+  </div>
+
+  <div id="quiz-box" class="centered-container" style="display: none;">
+    <h2 id="question-text"></h2>
+    <div id="options-container"></div>
+  </div>
+
+  <div id="question-box" class="centered-container" style="display: none;">
+    <h2 id="result"></h2>
+    <button class="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
+    <a href="https://github.com/suxaylshokirov" class="footer-link" target="_blank">Made by @suxaylshokirov</a>
+  </div>
+
+  <script>
+    let questions = [];
+    let current = 0;
+    let score = 0;
+
+    function startQuiz(category) {
+      fetch(`/api/quiz/?category=${category}`)
+        .then(res => res.json())
+        .then(data => {
+          questions = data;
+          current = 0;
+          score = 0;
+          document.getElementById("welcome-box").style.display = "none";
+          document.getElementById("quiz-box").style.display = "flex";
+          document.getElementById("question-box").style.display = "none";
+          showQuestion();
+        });
+    }
+
+    function showQuestion() {
+      const q = questions[current];
+      document.getElementById("question-text").innerText = `Q${current + 1}: ${q.question.text}`;
+      const container = document.getElementById("options-container");
+      container.innerHTML = "";
+
+      const allOptions = [...q.incorrectAnswers, q.correctAnswer].sort(() => Math.random() - 0.5);
+      allOptions.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "option";
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(btn, q.correctAnswer);
+        container.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(button, correct) {
+      const buttons = document.querySelectorAll(".option");
+      buttons.forEach(btn => btn.disabled = true);
+
+      if (button.innerText === correct) {
+        button.classList.add("correct");
+        score++;
+      } else {
+        button.classList.add("wrong");
+        buttons.forEach(btn => {
+          if (btn.innerText === correct) btn.classList.add("correct");
+        });
+      }
+
+      setTimeout(() => {
+        current++;
+        if (current < questions.length) {
+          showQuestion();
+        } else {
+          endQuiz();
+        }
+      }, 1000);
+    }
+
+    function endQuiz() {
+      document.getElementById("quiz-box").style.display = "none";
+      document.getElementById("question-box").style.display = "flex";
+      document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}`;
+    }
+
+    function restartQuiz() {
+      document.getElementById("question-box").style.display = "none";
+      document.getElementById("welcome-box").style.display = "flex";
+    }
+  </script>
+</body>
+</html>

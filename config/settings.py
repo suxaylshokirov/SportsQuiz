@@ -1,6 +1,5 @@
 from pathlib import Path
 from decouple import config
-from os.path import join
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    
     'quiz',
 ]
 
