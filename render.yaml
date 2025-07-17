@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: sportsquiz
-    runtime: python
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn config.wsgi:application"
-    envVars:
-      - key: DEBUG
-        value: "False"
