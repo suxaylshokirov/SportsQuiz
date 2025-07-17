@@ -107,7 +107,7 @@
   <!-- Rest of the HTML and JavaScript remains unchanged -->
   <div id="welcome-box" class="centered-container">
     <h1>Welcome to the Sports Quiz</h1>
-    <p>Choose a category:</p>
+    <p>Choose a sport:</p>
     <button class="category-btn" onclick="startQuiz('soccer')">⚽ Football (Soccer)</button>
     <button class="category-btn" onclick="startQuiz('basketball')">🏀 Basketball</button>
     <a href="https://github.com/suxaylshokirov" class="footer-link" target="_blank">Made by @suxaylshokirov</a>
@@ -186,7 +186,7 @@
     function endQuiz() {
       document.getElementById("quiz-box").style.display = "none";
       document.getElementById("question-box").style.display = "flex";
-      document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}`;
+      document.getElementById("result").innerText = `Your score: ${score}/${questions.length}`;
     }
 
     function restartQuiz() {
